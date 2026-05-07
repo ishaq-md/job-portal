@@ -1420,15 +1420,127 @@ pre {
   margin-bottom: 1rem;
 }
 
-/* Mobile responsive fixes */
+/* Mobile Header Bar */
+.mobile-header {
+  display: none;
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.mobile-menu-toggle {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile & Tablet responsive media queries */
 @media (max-width: 1024px) {
+  .mobile-header {
+    display: flex;
+  }
+
   #app-layout {
     grid-template-columns: 1fr;
+    padding-top: 0;
   }
+
   aside.navbar {
-    display: none; /* simple responsive hide or toggle, can be customized */
+    position: fixed;
+    top: 60px; /* Right below mobile header */
+    left: -280px;
+    width: 280px;
+    height: calc(100vh - 60px);
+    z-index: 150;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-sidebar);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    padding: 1.5rem 1rem;
+    display: flex;
   }
+
+  aside.navbar.mobile-active {
+    left: 0;
+  }
+
   main.content-area {
+    padding: 1.25rem;
+  }
+
+  /* Grid scaling */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .jobs-grid, .companies-grid, .prep-selector-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .editor-split-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  .company-detail-layout, .prep-main-content {
+    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
+    gap: 1.5rem;
+  }
+
+  .prep-main-content {
+    display: flex !important;
+  }
+
+  .hero-banner {
+    flex-direction: column-reverse !important;
+    gap: 1.5rem;
     padding: 1.5rem;
+    text-align: center;
+  }
+
+  .hero-graphic {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-graphic i {
+    font-size: 6rem !important;
   }
 }

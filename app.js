@@ -34,20 +34,48 @@ function updateSidebarUser() {
   const avatar = document.getElementById('user-profile-avatar');
   const name = document.getElementById('user-profile-name');
   const status = document.getElementById('user-profile-status');
+  const mobileAvatar = document.getElementById('mobile-avatar');
   if (!avatar || !name || !status) return;
 
   if (appState.user) {
-    avatar.innerText = appState.user.name.charAt(0).toUpperCase();
+    const initials = appState.user.name.charAt(0).toUpperCase();
+    avatar.innerText = initials;
     avatar.style.background = 'var(--primary-gradient)';
     avatar.style.color = '#fff';
     name.innerText = appState.user.name;
     status.innerHTML = `<span style="color: #10b981;">● Active</span> (Log Out)`;
+    
+    if (mobileAvatar) {
+      mobileAvatar.innerText = initials;
+      mobileAvatar.style.background = 'var(--primary-gradient)';
+      mobileAvatar.style.color = '#fff';
+    }
   } else {
     avatar.innerText = '?';
     avatar.style.background = 'rgba(255, 255, 255, 0.05)';
     avatar.style.color = 'var(--text-secondary)';
     name.innerText = 'Guest User';
     status.innerText = 'Click to Sign In';
+    
+    if (mobileAvatar) {
+      mobileAvatar.innerText = '?';
+      mobileAvatar.style.background = 'rgba(255, 255, 255, 0.05)';
+      mobileAvatar.style.color = 'var(--text-secondary)';
+    }
+  }
+}
+
+// Mobile sidebar drawer toggler
+function toggleMobileSidebar() {
+  const navbar = document.querySelector('aside.navbar');
+  const icon = document.getElementById('menu-toggle-icon');
+  if (!navbar || !icon) return;
+  
+  navbar.classList.toggle('mobile-active');
+  if (navbar.classList.contains('mobile-active')) {
+    icon.className = 'bx bx-x';
+  } else {
+    icon.className = 'bx bx-menu';
   }
 }
 
@@ -141,6 +169,14 @@ function handleAuthSubmit(e) {
 function switchView(viewName, params = null) {
   appState.activeView = viewName;
   saveState();
+
+  // Auto-close mobile sidebar drawer on navigation
+  const navbar = document.querySelector('aside.navbar');
+  if (navbar && navbar.classList.contains('mobile-active')) {
+    navbar.classList.remove('mobile-active');
+    const toggleIcon = document.getElementById('menu-toggle-icon');
+    if (toggleIcon) toggleIcon.className = 'bx bx-menu';
+  }
 
   // Update navigation items in sidebar
   const navItems = document.querySelectorAll('.nav-item');
