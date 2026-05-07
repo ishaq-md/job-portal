@@ -8,11 +8,11 @@
   --bg-card: rgba(17, 24, 39, 0.6);
   --bg-card-hover: rgba(31, 41, 55, 0.7);
   --border-color: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(59, 130, 246, 0.3);
+  --border-hover: rgba(168, 85, 247, 0.3);
   
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.15);
-  --primary-gradient: linear-gradient(135deg, #3b82f6, #6366f1);
+  --primary: #a855f7;
+  --primary-glow: rgba(168, 85, 247, 0.15);
+  --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
   
   --secondary: #10b981;
   --secondary-gradient: linear-gradient(135deg, #10b981, #059669);
@@ -28,7 +28,7 @@
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+  --shadow-glow: 0 0 20px rgba(168, 85, 247, 0.15);
 }
 
 * {

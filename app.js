@@ -183,11 +183,11 @@ function switchView(viewName, params = null) {
   navItems.forEach(item => {
     item.classList.remove('active');
     const label = item.querySelector('span').innerText.toLowerCase();
-    if (viewName === 'dashboard' && label === 'dashboard') item.classList.add('active');
+    if (viewName === 'dashboard' && label === 'home') item.classList.add('active');
     else if (viewName === 'jobs' && label === 'job portal') item.classList.add('active');
-    else if (viewName === 'prep' && label === 'prep center') item.classList.add('active');
-    else if (viewName === 'dsa' && label === 'dsa sheets') item.classList.add('active');
-    else if (viewName === 'companies' && label === 'company process') item.classList.add('active');
+    else if (viewName === 'prep' && label === 'preparation') item.classList.add('active');
+    else if (viewName === 'dsa' && label === 'dsa sheet') item.classList.add('active');
+    else if (viewName === 'companies' && label === 'companies') item.classList.add('active');
   });
 
   const contentArea = document.getElementById('app-content');
