@@ -82,7 +82,28 @@ As your project is already hosted on GitHub, GitHub Pages is the most integrated
 
 ---
 
-### Option 4: Local Deployment / Self-Hosting
+### Option 4: Google Cloud Run (Containerized Nginx Server)
+
+We have pre-configured a production-ready `Dockerfile` and custom `default.conf` Nginx server listening on port `8080`. To deploy to Google Cloud Run:
+
+1.  **Setup Google Cloud SDK:** Install the [gcloud CLI](https://cloud.google.com/sdk/docs/install) and authenticate:
+    ```bash
+    gcloud auth login
+    gcloud config set project [YOUR_GCP_PROJECT_ID]
+    ```
+2.  **Build and Deploy:**
+    Deploy directly from the source code in one simple command:
+    ```bash
+    gcloud run deploy im-jobs --source . --platform managed --allow-unauthenticated --port 8080
+    ```
+3.  **Deploy Prompt Options:**
+    *   Select your preferred deployment region (e.g., `us-central1`).
+    *   Confirm `yes` to "allow unauthenticated invocations" so the site is publicly visible.
+4.  **Live URL:** Once the container finishes building and deploying, the public URL will be printed directly in your terminal.
+
+---
+
+### Option 5: Local Deployment / Self-Hosting
 
 To run the application locally on your machine with a fast, modern server:
 
