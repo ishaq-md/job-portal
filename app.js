@@ -2,6 +2,7 @@
 
 // Global Application State (linked to localStorage for persistence)
 let appState = {
+  user: null,           // Logged in user info: { name, email }
   appliedJobs: [],      // Array of job IDs applied
   solvedDSA: [],        // Array of DSA problem IDs completed
   quizProgress: {},     // Key-value store of { quiz_id: score }
@@ -16,10 +17,124 @@ function initAppState() {
   } else {
     saveState();
   }
+  
+  const savedUser = localStorage.getItem('careerforge_user');
+  if (savedUser) {
+    appState.user = JSON.parse(savedUser);
+  }
+  updateSidebarUser();
 }
 
 function saveState() {
   localStorage.setItem('careerforge_state', JSON.stringify(appState));
+}
+
+// Sidebar Profile state and click actions
+function updateSidebarUser() {
+  const avatar = document.getElementById('user-profile-avatar');
+  const name = document.getElementById('user-profile-name');
+  const status = document.getElementById('user-profile-status');
+  if (!avatar || !name || !status) return;
+
+  if (appState.user) {
+    avatar.innerText = appState.user.name.charAt(0).toUpperCase();
+    avatar.style.background = 'var(--primary-gradient)';
+    avatar.style.color = '#fff';
+    name.innerText = appState.user.name;
+    status.innerHTML = `<span style="color: #10b981;">● Active</span> (Log Out)`;
+  } else {
+    avatar.innerText = '?';
+    avatar.style.background = 'rgba(255, 255, 255, 0.05)';
+    avatar.style.color = 'var(--text-secondary)';
+    name.innerText = 'Guest User';
+    status.innerText = 'Click to Sign In';
+  }
+}
+
+function handleUserProfileClick() {
+  if (appState.user) {
+    // Log out action
+    appState.user = null;
+    localStorage.removeItem('careerforge_user');
+    updateSidebarUser();
+    switchView(appState.activeView);
+    
+    document.getElementById('success-modal-title').innerText = "Logged Out Successfully";
+    document.getElementById('success-modal-body').innerText = "You have been signed out of your session. Feel free to log in again anytime!";
+    document.getElementById('success-modal').style.display = 'flex';
+  } else {
+    openAuthModal('login');
+  }
+}
+
+// Auth modal state controls
+let currentAuthTab = 'login';
+
+function openAuthModal(tab = 'login') {
+  toggleAuthTab(tab);
+  document.getElementById('auth-modal').style.display = 'flex';
+}
+
+function toggleAuthTab(tab) {
+  currentAuthTab = tab;
+  const loginBtn = document.getElementById('auth-tab-login');
+  const signupBtn = document.getElementById('auth-tab-signup');
+  const nameGroup = document.getElementById('auth-name-group');
+  const title = document.getElementById('auth-modal-title');
+  const subtitle = document.getElementById('auth-modal-subtitle');
+  const submitBtn = document.getElementById('auth-submit-btn');
+  if (!loginBtn || !signupBtn || !nameGroup || !title || !subtitle || !submitBtn) return;
+
+  if (tab === 'login') {
+    loginBtn.style.color = 'var(--primary)';
+    loginBtn.style.borderBottom = '2px solid var(--primary)';
+    signupBtn.style.color = 'var(--text-muted)';
+    signupBtn.style.borderBottom = 'none';
+    nameGroup.style.display = 'none';
+    title.innerText = 'Sign In';
+    subtitle.innerText = 'Welcome back! Access your profile & track progress.';
+    submitBtn.innerText = 'Log In';
+  } else {
+    signupBtn.style.color = 'var(--primary)';
+    signupBtn.style.borderBottom = '2px solid var(--primary)';
+    loginBtn.style.color = 'var(--text-muted)';
+    loginBtn.style.borderBottom = 'none';
+    nameGroup.style.display = 'block';
+    title.innerText = 'Create Account';
+    subtitle.innerText = 'Join today to solve sheets and apply for jobs.';
+    submitBtn.innerText = 'Sign Up';
+  }
+}
+
+function handleAuthSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById('auth-email').value;
+  const password = document.getElementById('auth-password').value;
+  const name = document.getElementById('auth-name').value || 'User';
+
+  if (currentAuthTab === 'signup') {
+    appState.user = { name, email };
+    localStorage.setItem('careerforge_user', JSON.stringify(appState.user));
+    closeModal('auth-modal');
+    updateSidebarUser();
+    switchView(appState.activeView);
+
+    document.getElementById('success-modal-title').innerText = "Account Created!";
+    document.getElementById('success-modal-body').innerText = `Welcome, ${name}! Your profile is fully ready and tracked on the dashboard.`;
+    document.getElementById('success-modal').style.display = 'flex';
+  } else {
+    const userDisplayName = email.split('@')[0];
+    const capitalized = userDisplayName.charAt(0).toUpperCase() + userDisplayName.slice(1);
+    appState.user = { name: capitalized, email };
+    localStorage.setItem('careerforge_user', JSON.stringify(appState.user));
+    closeModal('auth-modal');
+    updateSidebarUser();
+    switchView(appState.activeView);
+
+    document.getElementById('success-modal-title').innerText = "Logged In Successfully!";
+    document.getElementById('success-modal-body').innerText = `Welcome back, ${capitalized}! Your personalized progress has been loaded.`;
+    document.getElementById('success-modal').style.display = 'flex';
+  }
 }
 
 // Global SPA View Router
@@ -102,13 +217,28 @@ function renderDashboard(container) {
     `;
   });
 
+  const displayName = appState.user ? appState.user.name : "Guest";
   container.innerHTML = `
     <div class="view-header">
       <div class="view-title">
-        <h2>Welcome back, Ishaq!</h2>
+        <h2>Welcome back, ${displayName}!</h2>
         <p>Your centralized tracker for career building and interview success.</p>
       </div>
     </div>
+
+    <!-- Dynamic Guest Callout Banner -->
+    ${!appState.user ? `
+    <div class="glass-card" style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(99, 102, 241, 0.08)); border: 1px dashed var(--primary); margin-bottom: 2rem; border-radius: 16px; animation: modalScaleUp 0.4s ease-out;">
+      <div style="max-width: 70%;">
+        <h4 style="font-size: 1.1rem; color: var(--primary); font-family: 'Outfit', sans-serif; margin-bottom: 0.25rem;">Unlock Personalised Tracking!</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0; line-height: 1.4;">Sign up or log in to customize your profile, track applied jobs, and keep your interview prep progress synced across devices.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="btn btn-secondary btn-sm dsa-action-btn" onclick="openAuthModal('login')" style="padding: 0.5rem 1rem;">Log In</button>
+        <button class="btn btn-primary btn-sm dsa-action-btn" onclick="openAuthModal('signup')" style="padding: 0.5rem 1rem;">Sign Up</button>
+      </div>
+    </div>
+    ` : ''}
 
     <!-- Stats Panel -->
     <div class="stats-grid">
