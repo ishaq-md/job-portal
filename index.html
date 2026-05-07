@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ishaq Mohammed | Premium Job Portal & Interview Preparation Hub</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="An ultra-premium career portal and interview preparation platform featuring Jobs, Aptitude, DSA Sheet, Technical and HR preparation with integrated mock coding editor.">
+  
+  <!-- Icon Packs -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Full Application Layout Grid -->
+  <div id="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="navbar">
+      <div class="nav-brand">
+        <div class="brand-icon">IM</div>
+        <div class="brand-text">
+          <h1>Ishaq Mohammed</h1>
+          <p>Portal & Prep</p>
+        </div>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" onclick="switchView('dashboard')">
+          <i class="bx bxs-dashboard"></i>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item" onclick="switchView('jobs')">
+          <i class="bx bxs-briefcase"></i>
+          <span>Job Portal</span>
+        </li>
+        <li class="nav-item" onclick="switchView('prep')">
+          <i class="bx bxs-graduation"></i>
+          <span>Prep Center</span>
+        </li>
+        <li class="nav-item" onclick="switchView('dsa')">
+          <i class="bx bx-code-alt"></i>
+          <span>DSA Sheets</span>
+        </li>
+        <li class="nav-item" onclick="switchView('companies')">
+          <i class="bx bxs-business"></i>
+          <span>Company Process</span>
+        </li>
+      </ul>
+      
+      <div class="nav-footer">
+        <div class="user-profile">
+          <div class="user-avatar">I</div>
+          <div class="user-info">
+            <h4>Ishaq</h4>
+            <p>Ready to Prepare</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Dynamically-rendered Content Area -->
+    <main class="content-area" id="app-content">
+      <!-- Views will be injected here via app.js -->
+    </main>
+    
+  </div>
+
+  <!-- MODALS -->
+  
+  <!-- Job Application Modal -->
+  <div id="apply-modal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeModal('apply-modal')">×</button>
+      <div class="modal-header">
+        <h3 id="modal-job-title">Apply for Job</h3>
+        <p id="modal-job-company">Company Details</p>
+      </div>
+      <form id="apply-form" onsubmit="submitApplication(event)">
+        <input type="hidden" id="modal-job-id">
+        <div class="form-group">
+          <label for="applicant-name">Full Name</label>
+          <input type="text" id="applicant-name" class="form-control" placeholder="John Doe" required value="Ishaq">
+        </div>
+        <div class="form-group">
+          <label for="applicant-email">Email Address</label>
+          <input type="email" id="applicant-email" class="form-control" placeholder="john@example.com" required value="ishaq@example.com">
+        </div>
+        <div class="form-group">
+          <label for="applicant-resume">Resume URL</label>
+          <input type="url" id="applicant-resume" class="form-control" placeholder="https://drive.google.com/your-resume-link" required value="https://drive.google.com/file/d/ishaq_resume/view">
+        </div>
+        <div class="form-group">
+          <label for="applicant-portfolio">Portfolio or GitHub Link</label>
+          <input type="url" id="applicant-portfolio" class="form-control" placeholder="https://github.com/yourusername" value="https://github.com/ishaq">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success celebratory Modal -->
+  <div id="success-modal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 400px;">
+      <button class="modal-close" onclick="closeModal('success-modal')">×</button>
+      <div class="success-illustration">
+        <div class="success-circle">
+          <i class="bx bx-check"></i>
+        </div>
+        <h3 id="success-modal-title" style="font-size: 1.4rem;">Application Successful!</h3>
+        <p id="success-modal-body" style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
+          Your profile has been submitted successfully. You can track your application in your dashboard.
+        </p>
+        <button class="btn btn-primary" onclick="closeModal('success-modal')" style="width: 100%; margin-top: 1.25rem;">Awesome</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Javascript Engines -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
